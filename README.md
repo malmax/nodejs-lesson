@@ -1,1 +1,4 @@
-# nodejs-lesson
+### GeekBrains NodeJS
+
+Branches:
+* Lesson 1
