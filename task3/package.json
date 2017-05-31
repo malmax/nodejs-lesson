@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "beepbeep": "^1.2.1",
+    "chalk": "^1.1.3",
     "chalksay": "^1.1.0"
   }
 }
