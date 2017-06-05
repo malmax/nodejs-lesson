@@ -26,10 +26,10 @@ logger.trace('\nВы можете менять файл для логирова�
 
 while (true) {
   count += 1;
-  logger.trace(`\n\nОрел или Решка? Раунд ${count}`);
+  logger.trace(`\nОрел или Решка? Раунд ${count}`);
   const index = readlineSync.keyInSelect(questions, 'Выберите вариант');
   const random = Math.round(Math.random());
-  logger.debug(`Вы выбрали: ${questions[index]}`);
+  logger.info(`Вы выбрали: ${questions[index]}`);
   logger.info(`Монета показала: ${questions[random]}`);
 
   if (!questions[index]) {
