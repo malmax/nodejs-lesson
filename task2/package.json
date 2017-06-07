@@ -22,5 +22,10 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0"
+  },
+  "dependencies": {
+    "express": "^4.15.3",
+    "isomorphic-fetch": "^2.2.1",
+    "qs": "^6.4.0"
   }
 }
