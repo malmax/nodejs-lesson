@@ -1,14 +1,14 @@
 {
-  "name": "task1",
+  "name": "lesson6",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "webpack.config.js",
   "scripts": {
     "start": "node index.js",
     "babel-build": "rm -rf dist && mkdir dist && cp -t ./dist/ package.json README.md yarn.lock && babel src --out-dir dist --source-maps inline --copy-files",
     "dev": "DEBUG=1 npm run babel-build -- --watch"
   },
-  "author": "",
+  "author": "malmax",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.24.1",
