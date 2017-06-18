@@ -6,7 +6,8 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 module.exports = {
 
-  // убираем все externals модули из сборки
+  // убираем все externals модули из сборки это уменьшит вес сборки, но
+  // потребуетя ставить расширения на удаленном компе
   externals: [nodeExternals()],
   // говорим что будет исполняться только на сервере
   target: 'node',

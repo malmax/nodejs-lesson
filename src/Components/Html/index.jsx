@@ -10,7 +10,7 @@ export default (props) => {
       </head>
       <body>
         <div id="root">
-          {props.children}
+          {props.data}
         </div>
       </body>
     </html>

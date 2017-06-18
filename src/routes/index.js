@@ -3,7 +3,7 @@ import UniversalRouter from 'universal-router';
 const routes = [
   {
     path: '/',
-    action: () => '<h1>Home</h1>',
+    action: () => ({ title: 'Home', data: 'Home page' }),
   },
   {
     path: '/posts',
@@ -11,11 +11,14 @@ const routes = [
     children: [
       {
         path: '/',
-        action: () => '<h1>Posts</h1>',
+        action: () => ({ title: 'Posts', data: 'Posts' }),
       },
       {
         path: '/:id',
-        action: context => `<h1>Post #${context.params.id}</h1>`,
+        action: context => ({
+          title: `Post ${context.params.id}`,
+          data: `The Post ${context.params.id}`,
+        }),
       },
     ],
   },

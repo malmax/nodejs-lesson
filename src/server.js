@@ -11,8 +11,8 @@ const server = express();
 server.get('*', (req, res) => {
   routes.resolve({ path: req.path }).then((result) => {
     const element = React.createElement(Html, {
-      children: result,
-      title: 'title',
+      data: result.data,
+      title: result.title,
     });
     res.send(ReactDOMServer.renderToStaticMarkup(element));
   }).catch(() => {
