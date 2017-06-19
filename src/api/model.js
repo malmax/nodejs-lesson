@@ -1,86 +1,32 @@
-import mysql from 'mysql';
-import config from './config';
-
-const pool = mysql.createPool(config);
-
-
-export default (table) => {
+export default ({ table, db }) => {
   return {
     list(callback) {
-      pool.getConnection((err, connection) => {
-        // используем полученное соединение
-        connection.query('SELECT * FROM ??', [table], (queryErr, rows) => {
-          // возвращаем соединение в пул
-          connection.release();
-
-          if (queryErr) {
-            // console.log("Error", err);
-            return callback(queryErr);
-          }
-          return callback(null, rows);
-        });
-      });
+      if (NODE_ENV === 'development') {
+        console.log(`List rows from ${table}`);
+      }
+      db.get(`SELECT * FROM '${table}'`)
+          .then(data => callback(data))
+          .catch(err => console.error(err));
     },
     add(insertData, callback) {
-      pool.getConnection((err, connection) => {
-        // используем полученное соединение
-        connection.query('INSERT INTO ?? SET ?', [table, insertData], (queryErr, results) => {
-          // возвращаем соединение в пул
-          connection.release();
+      if (!insertData) { return false; }
+      const insertStr = Object.values(insertData)
+        .map(str => `"${str}"`).toString();
 
-          if (queryErr) {
-            // console.log("Error", err);
-            return callback(queryErr);
-          }
-          console.log(`Добавлена запись ${results.insertId}`);
-          return callback(null, results.insertId);
-        });
-      });
+      db.run(`INSERT INTO ${table} VALUES (NULL, ${insertStr})`)
+          .then(data => callback(data));
     },
     change(id, updateData, callback) {
-      pool.getConnection((err, connection) => {
-        // используем полученное соединение
-        connection.query('UPDATE ?? SET ? WHERE `id` = ?', [table, updateData, id], (queryErr, results) => {
-          // возвращаем соединение в пул
-          connection.release();
-
-          if (queryErr) {
-            // console.log("Error", err);
-            return callback(queryErr);
-          }
-          return callback(null, results.changedRows);
-        });
-      });
+      db.run('UPDATE ? SET ? WHERE `id` = ?', [table, updateData, id])
+        .then(data => callback(data));
     },
     complete(id, callback) {
-      pool.getConnection((err, connection) => {
-        // используем полученное соединение
-        connection.query('UPDATE ?? SET `complete`=1 WHERE `id` = ?', [table, id], (queryErr, results) => {
-          // возвращаем соединение в пул
-          connection.release();
-
-          if (queryErr) {
-            // console.log("Error", err);
-            return callback(queryErr);
-          }
-          return callback(null, results.changedRows);
-        });
-      });
+      db.run('UPDATE ? SET `complete`=1 WHERE `id` = ?', [table, id])
+        .then(data => callback(data));
     },
     delete(id, callback) {
-      pool.getConnection((err, connection) => {
-        // используем полученное соединение
-        connection.query('DELETE FROM ?? WHERE `id` = ? LIMIT 1;', [table, id], (queryErr, results) => {
-          // возвращаем соединение в пул
-          connection.release();
-
-          if (queryErr) {
-            // console.log("Error", err);
-            return callback(queryErr);
-          }
-          return callback(null, Boolean(results.affectedRows));
-        });
-      });
+      db.exec('DELETE FROM ? WHERE `id` = ? LIMIT 1;', [table, id])
+        .then(data => callback(data));
     },
   };
 };
