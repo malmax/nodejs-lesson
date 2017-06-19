@@ -25,8 +25,8 @@ export default ({ db }) => {
     },
     {
       path: '/auth',
-      action: ({ next, body }) => {
-        console.log('Auth module', body);
+      action: ({ next }) => {
+        console.log('Auth module');
         const response = next();
         return response;
       },

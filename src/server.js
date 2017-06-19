@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import expressSession from 'express-session';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Promise from 'bluebird';
@@ -10,7 +11,24 @@ import Html from './Components/Html';
 // Сздаем сервер
 const server = express();
 // parse application/x-www-form-urlencoded
+server.use(expressSession({ secret: 'MySecret' }));
 server.use(bodyParser.urlencoded({ extended: false }));
+
+import passport from 'passport';
+
+server.use(passport.initialize());
+server.use(passport.session());
+const Strategy = require('passport-local').Strategy;
+
+passport.use(new Strategy((username, password, done) => {
+  const user = db.get('SELECT * FROM users WHERE username = ? AND password = ?',
+   username, password);
+  if (!user) {
+    return done(null, false);
+  }
+  return done(null, user);
+}));
+
 
 // аутентификация
 server.use((req, res, next) => {
@@ -24,7 +42,7 @@ server.use((req, res, next) => {
 });
 
 // Роуты для Api
-const apiRoutes = require('./api/index').default({ express, db });
+const apiRoutes = require('./api').default({ express, db, passport });
 // Роуты для страниц
 const routes = require('./routes').default({ db });
 
@@ -32,8 +50,9 @@ const routes = require('./routes').default({ db });
 server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
+  console.log('User', req.user);
   console.log('Request:', req.path);
-  routes.resolve({ path: req.path, body: req.body }).then((result) => {
+  routes.resolve({ path: req.path }).then((result) => {
     const element = React.createElement(Html, {
       data: result.data,
       title: result.title,
