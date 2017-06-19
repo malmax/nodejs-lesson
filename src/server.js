@@ -10,7 +10,6 @@ import Html from './Components/Html';
 
 // Сздаем сервер
 const server = express();
-// parse application/x-www-form-urlencoded
 server.use(expressSession({ secret: 'MySecret' }));
 server.use(bodyParser.urlencoded({ extended: false }));
 
@@ -20,14 +19,35 @@ server.use(passport.initialize());
 server.use(passport.session());
 const Strategy = require('passport-local').Strategy;
 
-passport.use(new Strategy((username, password, done) => {
-  const user = db.get('SELECT * FROM users WHERE username = ? AND password = ?',
-   username, password);
-  if (!user) {
-    return done(null, false);
-  }
-  return done(null, user);
-}));
+passport.use(new Strategy({
+  usernameField: 'email',
+  passwordField: 'password',
+},
+  (username, password, done) => {
+    Promise.resolve()
+      .then(() => db.get('SELECT * FROM users WHERE username = ? AND password = ?',
+        username, password))
+      .then((user) => {
+        if (!user) {
+          done(null, false);
+          return;
+        }
+        done(null, { id: user.id, email: user.username });
+      });
+  }),
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+
+passport.deserializeUser((id, done) => {
+  Promise.resolve()
+  .then(() => db.get('SELECT * FROM users WHERE id = ?', id))
+  .then(user => done(null, { id: user.id, email: user.username }))
+  .catch(err => done(err));
+});
 
 
 // аутентификация
@@ -51,7 +71,6 @@ server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
   console.log('User', req.user);
-  console.log('Request:', req.path);
   routes.resolve({ path: req.path }).then((result) => {
     const element = React.createElement(Html, {
       data: result.data,

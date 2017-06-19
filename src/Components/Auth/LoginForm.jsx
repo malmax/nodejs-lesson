@@ -10,7 +10,6 @@ import {
 
 
 export default () => {
-  console.log('render form');
   return (
     <Col sm={6} smOffset={2}>
       <Form horizontal method="POST" action="/api/auth/login">

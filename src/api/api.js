@@ -17,11 +17,13 @@ export default ({ express, db, passport }) => {
 
 
   // auth
-  router.post('/auth/login', passport.authenticate('local'),
-  (req, res) => {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.redirect(`/users/${req.user.username}`);
+  router.post('/auth/login', passport.authenticate('local',
+    { failureRedirect: '/auth/login',
+      successRedirect: '/' }));
+
+  router.get('/auth/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
   });
 
   return router;

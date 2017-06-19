@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from '../../Components/Auth';
+import LoginForm from '../../Components/Auth/LoginForm';
 
 export default ({ db }) => {
   return ([
