@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginForm from '../../Components/Auth';
 
 export default ({ db }) => {
@@ -5,9 +6,11 @@ export default ({ db }) => {
     {
       path: '/login',
       action: () => {
-        return (
-          <LoginForm />
-        );
+        console.log('Login form');
+        return ({
+          title: 'Авторизация',
+          data: <LoginForm />,
+        });
       },
     },
   ]);

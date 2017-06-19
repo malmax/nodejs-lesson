@@ -25,9 +25,9 @@ export default ({ db }) => {
     },
     {
       path: '/auth',
-      async action({ next }) {
-        console.log('Auth module');
-        const response = await next();
+      action: ({ next, body }) => {
+        console.log('Auth module', body);
+        const response = next();
         return response;
       },
       children: require('./AuthRoute').default({ db }),

@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Promise from 'bluebird';
@@ -8,6 +9,8 @@ import Html from './Components/Html';
 
 // Сздаем сервер
 const server = express();
+// parse application/x-www-form-urlencoded
+server.use(bodyParser.urlencoded({ extended: false }));
 
 // аутентификация
 server.use((req, res, next) => {
@@ -29,7 +32,8 @@ const routes = require('./routes').default({ db });
 server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
-  routes.resolve({ path: req.path }).then((result) => {
+  console.log('Request:', req.path);
+  routes.resolve({ path: req.path, body: req.body }).then((result) => {
     const element = React.createElement(Html, {
       data: result.data,
       title: result.title,

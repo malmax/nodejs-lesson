@@ -9,40 +9,43 @@ import {
     ControlLabel } from 'react-bootstrap';
 
 
-export default function LoginForm() {
+export default () => {
+  console.log('render form');
   return (
-    <Form horizontal>
-      <FormGroup controlId="formHorizontalEmail">
-        <Col componentClass={ControlLabel} sm={2}>
+    <Col sm={6} smOffset={2}>
+      <Form horizontal method="POST" action="/api/auth/login">
+        <FormGroup controlId="formHorizontalEmail">
+          <Col componentClass={ControlLabel} sm={2}>
             Email
         </Col>
-        <Col sm={10}>
-          <FormControl type="email" placeholder="Email" />
-        </Col>
-      </FormGroup>
+          <Col sm={10}>
+            <FormControl type="email" placeholder="Email" name="email" />
+          </Col>
+        </FormGroup>
 
-      <FormGroup controlId="formHorizontalPassword">
-        <Col componentClass={ControlLabel} sm={2}>
+        <FormGroup controlId="formHorizontalPassword">
+          <Col componentClass={ControlLabel} sm={2}>
           Пароль
         </Col>
-        <Col sm={10}>
-          <FormControl type="password" placeholder="Password" />
-        </Col>
-      </FormGroup>
+          <Col sm={10}>
+            <FormControl type="password" placeholder="Password" name="password" />
+          </Col>
+        </FormGroup>
 
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          <Checkbox>Запомнить меня</Checkbox>
-        </Col>
-      </FormGroup>
+        <FormGroup>
+          <Col smOffset={2} sm={10}>
+            <Checkbox>Запомнить меня</Checkbox>
+          </Col>
+        </FormGroup>
 
-      <FormGroup>
-        <Col smOffset={2} sm={10}>
-          <Button type="submit">
+        <FormGroup>
+          <Col smOffset={2} sm={10}>
+            <Button type="submit">
             Залогиниться
           </Button>
-        </Col>
-      </FormGroup>
-    </Form>
+          </Col>
+        </FormGroup>
+      </Form>
+    </Col>
   );
-}
+};
