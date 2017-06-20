@@ -56,8 +56,13 @@ server.use((req, res, next) => {
   // если пользователь аутентифицирован - возвращаем true
   // нет - производим редирект
   req.requireAuth = () => {
-
+    // console.log(req);
+    if (!req.isAuthenticated()) {
+      // console.log('you have to authenticate');
+      res.redirect('/auth/login');
+    }
   };
+
   next();
 });
 
@@ -71,7 +76,7 @@ server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
   console.log('User', req.user);
-  routes.resolve({ path: req.path }).then((result) => {
+  routes.resolve({ path: req.path, requireAuth: req.requireAuth }).then((result) => {
     const element = React.createElement(Html, {
       data: result.data,
       title: result.title,

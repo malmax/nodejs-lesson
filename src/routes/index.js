@@ -16,18 +16,22 @@ export default ({ db }) => {
         },
         {
           path: '/:id',
-          action: context => ({
-            title: `Post ${context.params.id}`,
-            data: `The Post ${context.params.id}`,
-          }),
+          action: ({ params, requireAuth }) => {
+            // в этот раздел можно попасть только если аутентифицирован
+            requireAuth();
+            return ({
+              title: `Post ${params.id}`,
+              data: `The Post ${params.id}`,
+            });
+          },
         },
       ],
     },
     {
       path: '/auth',
       action: ({ next }) => {
-        console.log('Auth module');
-        const response = next();
+        // console.log('Auth module');
+        const response = Promise.resolve().then(() => next());
         return response;
       },
       children: require('./AuthRoute').default({ db }),

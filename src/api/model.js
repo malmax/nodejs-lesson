@@ -4,7 +4,7 @@ export default ({ table, db }) => {
       if (NODE_ENV === 'development') {
         console.log(`List rows from ${table}`);
       }
-      db.get(`SELECT * FROM '${table}'`)
+      db.all(`SELECT * FROM '${table}'`)
           .then(data => callback(data))
           .catch(err => console.error(err));
     },

@@ -2,14 +2,18 @@ export default ({ express, db, passport }) => {
   const router = express.Router();
   const taskModel = require('./model').default({ table: 'tasks', db });
 
+  // Получение всех задач
   router.get('/tasks', (req, res) => {
     taskModel.list(data => res.json(data));
   });
 
-  router.get('/tasks/add', (req, res) => {
+  // новая задача
+  router.post('/tasks/add', (req, res) => {
+    req.requireAuth();
+
     const insert = {
-      title: 'some title',
-      text: 'Lorem ipsum ...',
+      title: req.body.title || 'some title',
+      text: req.body.text || 'Lorem ipsum ...',
       complete: 0,
     };
     taskModel.add(insert, data => res.json(data));
