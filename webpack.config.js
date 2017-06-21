@@ -4,8 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-module.exports = {
-
+const baseConfig = {
   // убираем все externals модули из сборки это уменьшит вес сборки, но
   // потребуетя ставить расширения на удаленном компе
   externals: [nodeExternals()],
@@ -24,11 +23,13 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   // точки входа в наше приложение
   entry: {
+    'whatwg-fetch': 'whatwg-fetch',
     server: './server.js',
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/public/',
   },
   // source-map'ы для отладки в консоли
   devtool: NODE_ENV === 'development' ? 'cheap-inline-module-source-map' : null,
@@ -41,6 +42,8 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV),
+      __DEV__: JSON.stringify(NODE_ENV === 'development'),
+      SERVER: JSON.stringify(this.target === 'node'),
     }),
   ],
   module: {
@@ -65,3 +68,11 @@ module.exports = {
     modules: ['node_modules'],
   },
 };
+
+const client = Object.assign({}, baseConfig);
+delete client.externals;
+delete client.node;
+client.target = 'web';
+client.entry = { 'public/client': './client.js' };
+
+module.exports = [baseConfig, client];

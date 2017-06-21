@@ -1,24 +1,33 @@
+import React from 'react';
 import UniversalRouter from 'universal-router';
+import Tasks from '../Components/Tasks';
+
 // прокидываем базу
-export default ({ db }) => {
+export default () => {
   const routes = [
     {
       path: '/',
       action: () => ({ title: 'Home', data: 'Home page' }),
     },
     {
-      path: '/posts',
-      action: () => console.log('checking child routes for /posts'),
+      path: '/tasks',
+      async action({ next }) {
+        console.log('middleware: start');
+        const child = await next();
+        console.log('middleware: end');
+
+        return child;
+      },
       children: [
         {
           path: '/',
-          action: () => ({ title: 'Posts', data: 'Posts' }),
+          action: () => ({ title: 'Задачи', data: <Tasks /> }),
         },
         {
           path: '/:id',
           action: ({ params, requireAuth }) => {
             // в этот раздел можно попасть только если аутентифицирован
-            requireAuth();
+            if (requireAuth) requireAuth();
             return ({
               title: `Post ${params.id}`,
               data: `The Post ${params.id}`,
@@ -34,7 +43,7 @@ export default ({ db }) => {
         const response = Promise.resolve().then(() => next());
         return response;
       },
-      children: require('./AuthRoute').default({ db }),
+      children: require('./AuthRoute').default(),
     },
   ];
 

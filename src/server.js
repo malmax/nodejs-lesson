@@ -6,12 +6,17 @@ import ReactDOMServer from 'react-dom/server';
 import Promise from 'bluebird';
 import db from 'sqlite';
 
+// Лечим ошибку RegeneratorRunrime
+require('babel-polyfill');
+
 import Html from './Components/Html';
+import Root from './Components/Root/Root';
 
 // Сздаем сервер
 const server = express();
 server.use(expressSession({ secret: 'MySecret' }));
 server.use(bodyParser.urlencoded({ extended: false }));
+server.use('/public', express.static('dist/public'));
 
 import passport from 'passport';
 
@@ -75,14 +80,17 @@ const routes = require('./routes').default({ db });
 server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
-  console.log('User', req.user);
+  console.log('request', req.path);
   routes.resolve({ path: req.path, requireAuth: req.requireAuth }).then((result) => {
     const element = React.createElement(Html, {
-      data: result.data,
+      data: <Root data={result.data} />,
       title: result.title,
     });
     res.send(ReactDOMServer.renderToStaticMarkup(element));
-  }).catch(() => {
+  }).catch((err) => {
+    if (__DEV__) {
+      console.error(err);
+    }
     res.status(404);
     // default to plain-text. send()
     res.type('txt').send('Page not found');
