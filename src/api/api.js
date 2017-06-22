@@ -15,16 +15,19 @@ export default ({ express, db, passport }) => {
 
   // новая задача
   router.post('/tasks/add', (req, res) => {
-    req.requireAuth();
+    if (req.isAuthenticated()) {
+      const insert = {
+        title: req.body.title || 'some title',
+        text: req.body.text || 'Lorem ipsum ...',
+        complete: 0,
+      };
+      if (__DEV__) { console.log('api:', 'POST: /api/tasks/add', insert); }
 
-    const insert = {
-      title: req.body.title || 'some title',
-      text: req.body.text || 'Lorem ipsum ...',
-      complete: 0,
-    };
-    if (__DEV__) { console.log('api:', 'POST: /api/tasks/add', insert); }
-
-    taskModel.add(insert, data => res.json(data));
+      taskModel.add(insert, data => res.json(data));
+      res.redirect('/tasks');
+    } else {
+      res.redirect('/auth/login');
+    }
   });
 
 
