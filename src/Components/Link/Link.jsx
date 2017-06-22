@@ -28,9 +28,9 @@ class Link extends Component {
     onClick: PropTypes.func,
   };
 
-  static contextTypes = {
-    history: PropTypes.object.isRequired,
-  };
+  // static contextTypes = {
+  //   history: PropTypes.object.isRequired,
+  // };
 
   handleClick = (e) => {
     if (this.props.onClick) {
@@ -53,12 +53,11 @@ class Link extends Component {
       return;
     }
     e.preventDefault();
-
-    this.context.history.push(url);
+    this.props.history.push(url);
   };
 
   render() {
-    const { to, href, children, ...props } = this.props;
+    const { to, href, children, history, ...props } = this.props;
     return <a href={to || href} {...props} onClick={this.handleClick}>{children}</a>;
   }
 

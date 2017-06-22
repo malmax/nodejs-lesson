@@ -21,7 +21,7 @@ export default ({ table, db }) => {
         .then(data => callback(data));
     },
     complete(id, callback) {
-      db.run('UPDATE ? SET `complete`=1 WHERE `id` = ?', [table, id])
+      db.run(`UPDATE ${table} SET \`completed\`=1 WHERE \`id\` = '${id}'`)
         .then(data => callback(data));
     },
     delete(id, callback) {

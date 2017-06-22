@@ -9,23 +9,23 @@ export default (props) => {
         <title>{props.title} | MySite</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossOrigin="anonymous" />
-        {/* Выгружаем initial чтобы не фетчить и с клиента что сфетчили на сервере */}
+        {/* Выгружаем initial чтобы не фетчить с клиента что сфетчили на сервере */}
         <script
           dangerouslySetInnerHTML={{ __html:
           `window.___INITIAL_STATE___=JSON.parse('${JSON
-            .stringify(props.initial)}');`,
+            .stringify(props.initial || [])}');`,
           }}
         />
       </head>
       <body>
         <Grid>
           <div id="root">
-            <Root history={['some data']}>
+            <Root history={{}}>
               {props.data}
             </Root>
           </div>
         </Grid>
-        {/* <script src="/public/client.js" /> */}
+        <script defer src="/public/client.js" />
       </body>
     </html>
   );

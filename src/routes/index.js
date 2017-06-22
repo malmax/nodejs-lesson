@@ -19,11 +19,18 @@ export default () => {
       action: () => ({ title: 'Home', data: 'Home page' }),
     },
     {
+      path: '/restrict/area',
+      action: ({ requireAuth }) => {
+        if (requireAuth) requireAuth();
+        return ({ title: 'Restricted Area', data: 'Если Вы видите это сообщение, значит Вы авторизованы' });
+      },
+    },
+    {
       path: '/tasks',
       async action({ next }) {
-        console.log('middleware: start');
+        // console.log('middleware: start');
         const child = await next();
-        console.log('middleware: end');
+        // console.log('middleware: end');
 
         return child;
       },

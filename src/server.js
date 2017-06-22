@@ -12,7 +12,6 @@ import config from './config';
 require('babel-polyfill');
 
 import Html from './Components/Html';
-// import Root from './Components/Root/Root';
 
 // Сздаем сервер
 const server = express();
@@ -39,6 +38,7 @@ passport.use(new Strategy({
           done(null, false);
           return;
         }
+        console.log('authentificated', user.username);
         done(null, { id: user.id, email: user.username });
       });
   }),
@@ -82,7 +82,7 @@ const routes = require('./routes').default({ db });
 server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
-  console.log('request', req.path);
+  // console.log('request', req.path);
   routes.resolve({ path: req.path, requireAuth: req.requireAuth, config })
   .then((result) => {
     // console.log(result);
