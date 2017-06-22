@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "npm run build && node dist/server.js",
-    "build": "webpack"
+    "build": "webpack --colors",
+    "dev": "webpack --colors --watch",
   },
   "author": "malmax",
   "license": "ISC",

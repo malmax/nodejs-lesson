@@ -34,7 +34,7 @@ const baseConfig = {
   // source-map'ы для отладки в консоли
   devtool: NODE_ENV === 'development' ? 'cheap-inline-module-source-map' : null,
   // обновление без перезагрузки
-  watch: NODE_ENV === 'development',
+  // watch: NODE_ENV === 'development',
   watchOptions: {
     aggregateTimeout: 100,
   },
