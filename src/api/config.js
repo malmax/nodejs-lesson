@@ -1,5 +1,5 @@
 export default {
-  host: 'gplanet.ru',
+  host: 'localhost',
   database: 'todo',
   user: 'root',
   password: 'mysql',
