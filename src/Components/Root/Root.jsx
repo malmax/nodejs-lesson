@@ -48,10 +48,10 @@ export default function Root(props) {
             title: 'Логин',
             url: '/auth/login',
           },
-          {
-            title: 'Logout',
-            url: '/api/auth/logout',
-          },
+          // {
+          //   title: 'Logout',
+          //   url: '/api/auth/logout',
+          // },
         ].map((obj, id) => {
           return (
             <Col xs={2} key={obj.title + id.toString()}>
