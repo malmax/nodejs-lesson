@@ -91,7 +91,7 @@ export default class Tasks extends React.Component {
             completed={elem.completed || false}
           />)}
 
-        <AddTask onSubmit={addTask} />
+        <AddTask onSubmit={this.addTask} />
       </div>
     );
   }
