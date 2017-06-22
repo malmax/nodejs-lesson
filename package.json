@@ -6,8 +6,8 @@
   "scripts": {
     "start": "npm run build && node dist/server.js",
     "build": "webpack --colors",
-    "dev": "webpack --colors --watch",
-  },
+    "dev": "webpack --colors --watch"
+    },
   "author": "malmax",
   "license": "ISC",
   "devDependencies": {
