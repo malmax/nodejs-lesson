@@ -4,9 +4,8 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "node index.js",
-    "babel-build": "rm -rf dist && mkdir dist && cp -t ./dist/ package.json README.md yarn.lock && babel src --out-dir dist --source-maps inline --copy-files",
-    "dev": "DEBUG=1 npm run babel-build -- --watch"
+    "start": "npm run build && node dist/server.js",
+    "build": "webpack"
   },
   "author": "malmax",
   "license": "ISC",
