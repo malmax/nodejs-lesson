@@ -67,6 +67,7 @@ server.use((req, res, next) => {
     if (!req.isAuthenticated()) {
       // console.log('you have to authenticate');
       res.redirect('/auth/login');
+      next(new Error('требуется авторизация'));
     }
   };
 
