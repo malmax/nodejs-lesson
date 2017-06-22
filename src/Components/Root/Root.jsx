@@ -15,7 +15,7 @@ export default function Root(props) {
         left: 0,
         backgroundColor: 'darkred',
       }}
-    >SERVER</div>);
+    >SERVER RENDER</div>);
   } else {
     tag = (<div
       style={{
@@ -26,7 +26,7 @@ export default function Root(props) {
         left: 0,
         backgroundColor: 'green',
       }}
-    >CLIENT</div>);
+    >CLIENT RENDER</div>);
   }
 
   return (

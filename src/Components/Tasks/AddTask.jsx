@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormGroup, ControlLabel, FormControl, Button, Col } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button, Col } from 'react-bootstrap';
 
 export default function AddTask(props) {
   return (
