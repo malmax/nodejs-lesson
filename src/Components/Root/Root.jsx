@@ -12,7 +12,7 @@ export default function Root(props) {
         padding: 5,
         top: 0,
         color: 'white',
-        left: 0,
+        right: 0,
         backgroundColor: 'darkred',
       }}
     >SERVER RENDER</div>);
@@ -23,7 +23,7 @@ export default function Root(props) {
         top: 0,
         padding: 5,
         color: 'black',
-        left: 0,
+        right: 0,
         backgroundColor: 'green',
       }}
     >CLIENT RENDER</div>);
