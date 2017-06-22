@@ -17,7 +17,7 @@ export default function AddTask(props) {
           </FormGroup>
         </Col>
         <Col xs={2}>
-          <Button type="submit" onCLick={props.onSubmit}>
+          <Button type="submit" onClick={props.onSubmit}>
             добавить задачу
           </Button>
         </Col>
