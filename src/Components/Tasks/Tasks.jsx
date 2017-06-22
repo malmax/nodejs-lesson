@@ -50,6 +50,8 @@ export default class Tasks extends React.Component {
   }
 
   addTask = (e) => {
+    // e.preventDefault();
+
     fetch('/api/tasks/add', {
       method: 'POST',
     }).then((response) => {

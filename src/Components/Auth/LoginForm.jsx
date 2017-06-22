@@ -18,7 +18,7 @@ export default () => {
             Email
         </Col>
           <Col sm={10}>
-            <FormControl type="email" placeholder="Email" name="email" />
+            <FormControl type="email" placeholder="Email" defaultValue="malmax.spb@gmail.com" name="email" />
           </Col>
         </FormGroup>
 
@@ -27,7 +27,7 @@ export default () => {
           Пароль
         </Col>
           <Col sm={10}>
-            <FormControl type="password" placeholder="Password" name="password" />
+            <FormControl type="password" defaultValue="secret" placeholder="Password" name="password" />
           </Col>
         </FormGroup>
 
