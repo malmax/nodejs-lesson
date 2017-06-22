@@ -11,6 +11,8 @@ export default ({ express, db, passport }) => {
   router.post('/tasks/add', (req, res) => {
     req.requireAuth();
 
+    console.log('api:', 'tasks');
+
     const insert = {
       title: req.body.title || 'some title',
       text: req.body.text || 'Lorem ipsum ...',

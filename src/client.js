@@ -16,25 +16,23 @@ const routes = require('./routes').default();
 const history = createBrowserHistory();
 
 history.listen((location, action) => {
-  // location is an object like window.location
-  console.log(action, location.pathname, location.state);
+  // console.log(action, location.pathname, location.state);
   routes.resolve({ path: location.pathname, requireAuth: () => true })
   .then((result) => {
     const element = React.createElement(Root, {
-      data: result.data,
       title: result.title,
-    });
+      history,
+    }, result.data);
     ReactDom.render(element, document.getElementById('root'));
   }).catch((err) => {
     if (__DEV__) {
       console.error(err);
     }
     const element = React.createElement(Root, {
-      data: 'Страница не найдена',
       title: '404',
-    });
+    }, 'Страница не найдена');
     ReactDom.render(element, document.getElementById('root'));
   });
 });
 
-history.push('/tasks');
+// history.push('/tasks');

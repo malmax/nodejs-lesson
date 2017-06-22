@@ -5,7 +5,7 @@ export default (props) => {
   return (
     <Row>
       <article>
-        <Col xs={1}>{props.id}</Col>
+        <Col xs={1}>{props.id + 1}</Col>
         <Col xs={3}>{props.title}</Col>
         <Col xs={5}>{props.text}</Col>
         <Col xs={2}>

@@ -1,24 +1,34 @@
 import React from 'react';
-// require('es6-promise').polyfill();
-if (!SERVER) {
-  const fetch = require('whatwg-fetch');
-} else {
-  const fetch = require('isomorphic-fetch');
-}
+import Task from './Task';
 
-import Task from './Task.jsx';
+const fetch = require('whatwg-fetch');
+
+
+if (SERVER) {
+  console.log('SERVER');
+} else {
+  console.log('CLIENT');
+}
+// } else {
+//   const fetch = require('isomorphic-fetch');
+// }
 
 export default class Tasks extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      tasks: [],
-    };
+    if (!SERVER && window.___INITIAL_STATE___) {
+      this.state = {
+        tasksToComplete: window.___INITIAL_STATE___ || [],
+      };
+    } else {
+      this.state = {
+        tasksToComplete: this.props.initial || [],
+      };
+    }
   }
 
   componentDidMount() {
-    console.log('mounted', 'Tasks');
     fetch('/api/tasks')
       .then((response) => {
         if (response.status >= 400) {
@@ -27,16 +37,14 @@ export default class Tasks extends React.Component {
         console.log(response);
         return response.json();
       })
-      .then(response => this.setState({ tasks: response }));
+      .then(response => this.setState({ tasksToComplete: response }));
   }
 
   render() {
-    console.log('render', 'Tasks');
-
     return (
       <div>
         <h2>Не выполненные задачи:</h2>
-        {this.state.tasks.map((elem, id) =>
+        {this.state.tasksToComplete.map((elem, id) =>
           <Task
             id={id}
             key={elem.id + elem.title}

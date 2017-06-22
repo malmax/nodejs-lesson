@@ -43,7 +43,7 @@ const baseConfig = {
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV),
       __DEV__: JSON.stringify(NODE_ENV === 'development'),
-      SERVER: JSON.stringify(this.target === 'node'),
+      SERVER: JSON.stringify(true),
     }),
   ],
   module: {
@@ -60,6 +60,7 @@ const baseConfig = {
         },
         exclude: /node_modules/,
       },
+
     ],
   },
   // расширения файлов по-умолчанию
@@ -72,7 +73,28 @@ const baseConfig = {
 const client = Object.assign({}, baseConfig);
 delete client.externals;
 delete client.node;
+client.plugins = [
+  new webpack.NoEmitOnErrorsPlugin(),
+  new webpack.DefinePlugin({
+    NODE_ENV: JSON.stringify(NODE_ENV),
+    __DEV__: JSON.stringify(NODE_ENV === 'development'),
+    SERVER: JSON.stringify(false),
+  }),
+];
+client.module.rules.push({
+  test: /\.css$/,
+  loaders: [
+    'style',
+    'css?module&localIdentName=[name]__[local]___[hash:base64:5]',
+  ],
+});
 client.target = 'web';
 client.entry = { 'public/client': './client.js' };
 
-module.exports = [baseConfig, client];
+const server = Object.assign({}, baseConfig);
+server.module.rules.push({
+  test: /\.css$/,
+  loader: 'css-loader/locals?modules&localIdentName=[path][name]---[local]---[hash:base64:5]',
+});
+
+module.exports = [server, client];

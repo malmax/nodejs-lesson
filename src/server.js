@@ -6,11 +6,13 @@ import ReactDOMServer from 'react-dom/server';
 import Promise from 'bluebird';
 import db from 'sqlite';
 
+import config from './config';
+
 // Лечим ошибку RegeneratorRunrime
 require('babel-polyfill');
 
 import Html from './Components/Html';
-import Root from './Components/Root/Root';
+// import Root from './Components/Root/Root';
 
 // Сздаем сервер
 const server = express();
@@ -81,12 +83,14 @@ server.use('/api', apiRoutes);
 // используем роутер страниц
 server.get('*', (req, res) => {
   console.log('request', req.path);
-  routes.resolve({ path: req.path, requireAuth: req.requireAuth }).then((result) => {
-    const element = React.createElement(Html, {
-      data: <Root data={result.data} />,
-      title: result.title,
-    });
-    res.send(ReactDOMServer.renderToStaticMarkup(element));
+  routes.resolve({ path: req.path, requireAuth: req.requireAuth, config })
+  .then((result) => {
+    // console.log(result);
+    const element = React.createElement(Html, result);
+    // console.log(element);
+    const content = ReactDOMServer.renderToStaticMarkup(element);
+    // console.log(content);
+    res.send(content);
   }).catch((err) => {
     if (__DEV__) {
       console.error(err);
@@ -104,6 +108,6 @@ Promise.resolve()
   .then(() => db.migrate({ force: 'last', migrationsPath: './db/migrations' }))
   .catch(err => console.error(err.stack))
   // Finally, launch Node.js app
-  .finally(() => server.listen(8090, () => {
-    console.log('Listen 8090');
+  .finally(() => server.listen(config.port, () => {
+    console.log(`Listen ${config.baseUrl}`);
   }));

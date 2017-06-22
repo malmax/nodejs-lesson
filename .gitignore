@@ -1,4 +1,5 @@
 dist
+*.sqlite
 
 # Logs
 logs
